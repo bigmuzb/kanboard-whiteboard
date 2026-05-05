@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board</title>
+  <link rel="icon" type="image/png" href="logo.svg">
+  <link rel="manifest" href="/manifest.json?v=20260505-notool-brand">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <meta name="theme-color" content="#1a1a22">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Board">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tb: {
+              bg: '#1a1a22',
+              card: '#2d2d3a',
+              border: '#3a3a4a',
+              header: '#13131a',
+              text: '#f5f5f0',
+              muted: '#a0a0b0',
+              dim: '#6b6b80',
+              coral: '#c44030',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-kw-bg text-kw-text min-h-screen" style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;">
+
+  <!-- Header -->
+  <header class="bg-kw-header border-b border-kw-border sticky top-0 z-30">
+    <div class="max-w-[1900px] mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-3">
+      <div class="flex items-center gap-3">
+        <img src="logo.svg" alt="" id="brand-logo" class="h-10 w-auto">
+        <h1 class="text-xl font-bold tracking-wide hidden sm:block" id="brand-name"></h1>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <div id="project-tabs" class="flex gap-2 flex-wrap"></div>
+        <div class="h-5 w-px bg-kw-border/50 hidden sm:block"></div>
+        <div id="filter-bar" class="flex gap-1.5 items-center flex-wrap"></div>
+        <button id="theme-toggle" onclick="toggleTheme()" class="text-kw-dim hover:text-kw-muted transition-colors p-1.5 rounded" title="Toggle light/dark mode">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+        <button onclick="openIdentityModal()" class="flex items-center gap-1 text-kw-dim hover:text-kw-muted transition-colors p-1 rounded" title="Change identity">
+          <span id="identity-label" class="text-xs hidden sm:inline"></span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading State -->
+  <div id="loading" class="flex items-center justify-center h-[60vh]">
+    <div class="text-center">
+      <div class="loading-spinner mx-auto mb-4"></div>
+      <p class="text-kw-dim text-lg">Loading board...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div id="error" class="hidden flex items-center justify-center h-[60vh]">
+    <div class="text-center">
+      <p class="text-red-400 text-lg mb-2" id="error-message">Failed to connect</p>
+      <button onclick="init()" class="text-kw-muted hover:text-kw-text underline text-sm">Try again</button>
+    </div>
+  </div>
+
+  <!-- Board -->
+  <main id="board" class="hidden">
+    <div id="columns" class="flex gap-4 p-4 pb-8 min-h-[calc(100vh-72px)]"></div>
+  </main>
+
+  <!-- Panel Overlay -->
+  <div id="panel-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="closeTaskPanel()"></div>
+
+  <!-- Task Edit Panel -->
+  <div id="task-panel" class="fixed right-0 top-0 h-full w-full sm:w-[420px] bg-kw-header border-l border-kw-border z-50 transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
+    <div class="bg-slate-800 border border-kw-border text-kw-text px-4 py-2 rounded-lg shadow-lg text-sm" id="toast-message"></div>
+  </div>
+
+  <!-- Identity Modal -->
+  <div id="identity-modal" class="fixed inset-0 bg-black/60 z-[60] hidden items-center justify-center" onclick="if(getCurrentUserId()) closeIdentityModal()">
+    <div class="bg-kw-header border border-kw-border rounded-xl p-6 w-full max-w-sm mx-4 shadow-2xl" onclick="event.stopPropagation()">
+      <h2 class="text-lg font-semibold mb-1">Who are you?</h2>
+      <p class="text-kw-dim text-sm mb-4">Select your name to personalize the board</p>
+      <div id="identity-options" class="space-y-2"></div>
+    </div>
+  </div>
+
+  <script src="config.js?v=20260505-notool-brand"></script>
+  <script>
+    document.title = CONFIG.BRAND_NAME + ' Board';
+    document.getElementById('brand-name').textContent = CONFIG.BRAND_NAME;
+    document.getElementById('brand-logo').alt = CONFIG.BRAND_NAME;
+    document.querySelector('meta[name="apple-mobile-web-app-title"]').content = CONFIG.BRAND_NAME + ' Board';
+  </script>
+  <script src="app.js?v=20260505-comment-attribution"></script>
+  <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js?v=20260505-notool-brand').catch(err => {
+        console.warn('SW registration failed:', err);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+services:
+  kanboard:
+    image: kanboard/kanboard:latest
+    ports:
+      - "8888:80"
+    volumes:
+      - kanboard_data:/var/www/app/data
+      - kanboard_plugins:/var/www/app/plugins
+    networks:
+      - internal
+    restart: unless-stopped
+
+  ca-board:
+    build: .
+    depends_on:
+      - kanboard
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - PORT=3000
+      - KANBOARD_URL=http://kanboard:80/jsonrpc.php
+      - KANBOARD_USER=${KANBOARD_USER:-jsonrpc}
+      - KANBOARD_KEY=${KANBOARD_KEY}
+      - BRAND_NAME=${BRAND_NAME:-Kanboard Whiteboard}
+      - ADMIN_SECRET=${ADMIN_SECRET:-}
+    volumes:
+      - board_data:/app/data
+    networks:
+      - internal
+    restart: unless-stopped
+
+volumes:
+  kanboard_data:
+  kanboard_plugins:
+  board_data:
+
+networks:
+  internal:
+    driver: bridge

@@ -1,0 +1,67 @@
+# Demo stack: Kanboard + Kanboard Whiteboard + sample-data seeder.
+#
+# Run:
+#   docker compose -f docker-compose.demo.yml up -d --build
+#   docker compose -f docker-compose.demo.yml logs demo-seed
+#
+# Reset everything:
+#   docker compose -f docker-compose.demo.yml down -v
+#   docker compose -f docker-compose.demo.yml up -d --build
+
+services:
+  kanboard:
+    image: kanboard/kanboard:latest
+    environment:
+      - API_AUTHENTICATION_TOKEN=demo-jsonrpc-token
+    volumes:
+      - demo_kanboard_data:/var/www/app/data
+      - demo_kanboard_plugins:/var/www/app/plugins
+    networks:
+      - demo
+    restart: unless-stopped
+
+  whiteboard:
+    build: .
+    depends_on:
+      - kanboard
+    ports:
+      - "127.0.0.1:${DEMO_PORT:-3000}:3000"
+    environment:
+      - PORT=3000
+      - BRAND_NAME=NOTOOL Whiteboard Demo
+      - KANBOARD_URL=http://kanboard:80/jsonrpc.php
+      - KANBOARD_USER=jsonrpc
+      - KANBOARD_KEY=demo-jsonrpc-token
+      - ADMIN_SECRET=demo-local-only-change-before-internet
+      - DEMO_MODE=true
+    volumes:
+      - demo_board_data:/app/data
+    networks:
+      - demo
+    restart: unless-stopped
+
+  demo-seed:
+    build: .
+    depends_on:
+      - kanboard
+      - whiteboard
+    command: ["node", "scripts/seed-demo.js"]
+    environment:
+      - WHITEBOARD_URL=http://localhost:${DEMO_PORT:-3000}
+      - KANBOARD_URL=http://kanboard:80/jsonrpc.php
+      - KANBOARD_USER=jsonrpc
+      - KANBOARD_KEY=demo-jsonrpc-token
+    volumes:
+      - demo_board_data:/app/data
+    networks:
+      - demo
+    restart: "no"
+
+volumes:
+  demo_kanboard_data:
+  demo_kanboard_plugins:
+  demo_board_data:
+
+networks:
+  demo:
+    driver: bridge

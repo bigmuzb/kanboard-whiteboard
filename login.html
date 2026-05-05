@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board — Login</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="manifest" href="/manifest.json?v=20260505-notool-brand">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <meta name="theme-color" content="#06090e">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #06090e; }
+    .logo-pulse { animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4">
+  <div class="text-center max-w-md mx-auto">
+    <img src="logo.png" alt="" id="brand-logo" class="h-16 mx-auto mb-8 logo-pulse">
+    <h1 class="text-2xl font-bold text-white mb-2" id="brand-title"></h1>
+    <p class="text-slate-400 mb-8">Ask your admin for a login link to get started.</p>
+    <div class="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
+      <p class="text-slate-500 text-sm">
+        Your admin will send you a magic link via text or email.<br>
+        Just tap the link and you're in — no password needed.
+      </p>
+    </div>
+    <p class="text-slate-600 text-xs mt-8" id="brand-footer"></p>
+  </div>
+  <script src="config.js?v=20260505-notool-brand"></script>
+  <script>
+    document.title = CONFIG.BRAND_NAME + ' Board — Login';
+    document.getElementById('brand-logo').alt = CONFIG.BRAND_NAME;
+    document.getElementById('brand-title').textContent = CONFIG.BRAND_NAME + ' Board';
+    document.getElementById('brand-footer').innerHTML = CONFIG.BRAND_NAME + ' &copy; ' + new Date().getFullYear();
+  </script>
+</body>
+</html>

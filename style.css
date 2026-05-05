@@ -1,0 +1,161 @@
+/* Kanboard Whiteboard — Custom Styles */
+
+/* Loading spinner */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(30, 41, 59, 0.5);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+/* Task card drag states */
+.sortable-ghost {
+  opacity: 0.4;
+}
+.sortable-chosen {
+  cursor: grabbing;
+}
+.sortable-drag {
+  opacity: 0.9;
+  transform: rotate(2deg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Task card hover */
+.task-card {
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.task-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Overdue task indicator — red glow without overriding card bg colour */
+.task-overdue {
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.5), 0 0 8px rgba(239, 68, 68, 0.2);
+  animation: overdue-pulse 3s ease-in-out infinite;
+}
+.task-overdue:hover {
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.6), 0 4px 16px rgba(239, 68, 68, 0.25);
+}
+@keyframes overdue-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.5), 0 0 8px rgba(239, 68, 68, 0.15); }
+  50% { box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.7), 0 0 14px rgba(239, 68, 68, 0.3); }
+}
+
+/* Panel slide animation */
+.panel-open {
+  transform: translateX(0) !important;
+}
+
+/* Column min-height for drop targets */
+.task-list {
+  min-height: 80px;
+}
+
+/* Toast animation */
+.toast-show {
+  animation: toastIn 0.3s ease-out;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Project tab active state */
+.project-tab {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Add task form animation */
+.add-form-enter {
+  animation: fadeSlideIn 0.2s ease-out;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Date input styling for dark theme */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+/* Focus styles */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+/* Filter pill hover */
+.filter-pill {
+  cursor: pointer;
+}
+
+/* Identity modal animation */
+#identity-modal > div {
+  animation: fadeSlideIn 0.2s ease-out;
+}
+
+/* Collapsed column drop target highlight during drag */
+.collapsed-drop-zone.drop-target-active {
+  border-color: #3b82f6 !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Collapsed task list — invisible but accepts drops */
+.collapsed-task-list {
+  z-index: 10;
+}
+
+/* Theme toggle transition */
+#theme-toggle {
+  transition: color 0.15s ease;
+}
+
+/* Desktop: columns fit viewport */
+@media (min-width: 768px) {
+  .board-column {
+    min-width: 0 !important;
+  }
+}
+
+/* Mobile: stack columns vertically */
+@media (max-width: 767px) {
+  #columns {
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    gap: 0.75rem;
+  }
+  .board-column {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}

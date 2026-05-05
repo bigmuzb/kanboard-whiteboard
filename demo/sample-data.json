@@ -1,0 +1,49 @@
+{
+  "brandName": "Demo Whiteboard",
+  "users": [
+    { "username": "admin", "name": "Demo Admin", "role": "admin" },
+    { "username": "ben.dover", "name": "Ben Dover", "role": "user" },
+    { "username": "harry.highpants", "name": "Harry Highpants", "role": "user" },
+    { "username": "elvis.parsley", "name": "Elvis Parsley", "role": "user" },
+    { "username": "ralph.longbottom", "name": "Ralph Longbottom", "role": "user" },
+    { "username": "sammy.apiman", "name": "Sammy APIman", "role": "user" },
+    { "username": "dazza.modelton", "name": "Dazza Modelton", "role": "user" }
+  ],
+  "projects": [
+    {
+      "name": "Site Shed Demo",
+      "tasks": [
+        { "title": "Label the whiteboard before someone writes on the TV", "column": "Backlog", "owner": "Ben Dover", "color": "blue", "description": "A realistic sample task for showing simple site-office workflow." },
+        { "title": "Find the missing ute keys before smoko", "column": "Ready", "owner": "Harry Highpants", "color": "orange", "description": "Demo task showing assigned work and colour coding." },
+        { "title": "Teach Ralph not to approve purchase orders with paw prints", "column": "Work in progress", "owner": "Ralph Longbottom", "color": "green", "description": "Important governance control. Very serious." },
+        { "title": "Check the demo still works on a cracked Android phone", "column": "Done", "owner": "Elvis Parsley", "color": "purple", "description": "Mobile-first means actual phones, not just desktop dev tools." }
+      ]
+    },
+    {
+      "name": "AI Lab Demo",
+      "tasks": [
+        { "title": "Beat the other lab without becoming the smug API empire", "column": "Backlog", "owner": "Dazza Modelton", "color": "red", "description": "Sample rivalry task. Fictional. Mostly." },
+        { "title": "Beat the safety lab without accidentally inventing more meetings", "column": "Backlog", "owner": "Sammy APIman", "color": "yellow", "description": "Sample rivalry task for the demo board." },
+        { "title": "Try not to burn the entire demo budget before lunch", "column": "Ready", "owner": "Dazza Modelton", "color": "red", "description": "Budget discipline: now with extra hand-waving." },
+        { "title": "Try not to burn the imaginary cloud bill by 9:15am", "column": "Ready", "owner": "Sammy APIman", "color": "yellow", "description": "A calm reminder that GPUs are not free-range livestock." },
+        { "title": "Write three ominous launch quotes about the new model", "column": "Work in progress", "owner": "Dazza Modelton", "color": "red", "description": "Make it sound dangerous enough for press coverage, but not dangerous enough for regulation." },
+        { "title": "Write three even more ominous launch quotes about our new model", "column": "Work in progress", "owner": "Sammy APIman", "color": "yellow", "description": "Remember to say alignment at least twice." },
+        { "title": "Create a benchmark where everyone wins and nobody understands why", "column": "Done", "owner": "Elvis Parsley", "color": "purple", "description": "Demo completed task with a slightly cursed title." }
+      ]
+    },
+    {
+      "name": "Operations Demo",
+      "tasks": [
+        { "title": "Replace the spreadsheet called final_FINAL_really_final.xlsx", "column": "Backlog", "owner": "Harry Highpants", "color": "cyan", "description": "Every business has one. This is a safe space." },
+        { "title": "Move recurring chaos into a board people can actually read", "column": "Ready", "owner": "Ben Dover", "color": "blue", "description": "The actual reason this app exists." },
+        { "title": "Add screenshots before posting the repo anywhere serious", "column": "Work in progress", "owner": "Ralph Longbottom", "color": "green", "description": "Launch hygiene. No real client data. No magic tokens." },
+        { "title": "Thank the upstream project like a decent human", "column": "Done", "owner": "Elvis Parsley", "color": "purple", "description": "Kanboard does the heavy lifting. This is the nice-looking window." }
+      ]
+    }
+  ],
+  "comments": [
+    "This is sample data. Please do not run your actual business from the public demo.",
+    "If this task looks ridiculous, good. It means no client data leaked into the demo.",
+    "Public sandbox data may be reset at any time. Screenshots welcome. Procurement decisions less so."
+  ]
+}
